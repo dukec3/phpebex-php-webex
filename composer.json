@@ -1,7 +1,7 @@
 {
-    "name": "drakkon-net/php-webex",
+    "name": "drakkon-net/phpebex",
     "description": "Simple class to integrate with Cisco Webex XML API.",
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.3.0"
     }
 }
