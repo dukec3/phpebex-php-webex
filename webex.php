@@ -7,12 +7,12 @@
  * @author Joubert Guimarães de Assis "RedRat" <joubert@redrat.com.br> - modified by Christopher Duke <duke@drakkon.net>
  * @copyright Copyright (c) 2015
  * @license GPL version 2
- * @link http://developer.cisco.com/documents/4733862/4736722/xml_api_5+9.pdf
+ *
+ * @link https://developer.cisco.com/site/webex-developer/develop-test/xml-api/overview/
  * @link https://github.com/dukec3/phpebex-php-webex
  */
-
- class Webex {
-
+ class Webex
+ {
      private $username;
      private $password;
      private $siteID;
@@ -44,10 +44,9 @@
 
      /**
       * Constructor of class.
-      *
-      * @return void
       */
-     public function __construct() {
+     public function __construct()
+     {
          $this->action = 0;
          $this->response = array();
          $this->send_mode = in_array(self::SEND_CURL, get_loaded_extensions()) ? self::SEND_CURL : self::SEND_FSOCKS;
@@ -58,7 +57,8 @@
       *
       * @return array Returns a list of send modes.
       */
-     public static function get_sendmode() {
+     public static function get_sendmode()
+     {
          return array(self::SEND_CURL, self::SEND_FSOCKS);
      }
 
@@ -66,10 +66,13 @@
       * Validates a customer webex domain.
       *
       * @param string $url Url to validate.
+      *
       * @return bool Return true if a valid url or false if not.
       */
-     public static function validate_url($url) {
-         $regex = "/^(http|https):\/\/(([A-Z0-9][A-Z0-9_-]*)+.(" . self::WEBEX_DOMAIN . ")$)/i";
+     public static function validate_url($url)
+     {
+         $regex = "/^(http|https):\/\/(([A-Z0-9][A-Z0-9_-]*)+.(".self::WEBEX_DOMAIN.')$)/i';
+
          return (bool) preg_match($regex, $url);
      }
 
@@ -77,9 +80,11 @@
       * Get port used by API.
       *
       * @param string $prefix Prefix to get a port.
+      *
       * @return int Return a port.
       */
-     public static function get_port($prefix) {
+     public static function get_port($prefix)
+     {
          switch ($prefix) {
              case self::PREFIX_HTTP:
                  return 80;
@@ -88,7 +93,7 @@
                  return 443;
                  break;
              default:
-                 exit(__CLASS__ . ' error report: Wrong prefix');
+                 exit(__CLASS__.' error report: Wrong prefix');
                  break;
          }
      }
@@ -97,23 +102,25 @@
       * Set a url to integrate to webex.
       *
       * @param string $url Customer url.
-      * @return void
       */
-     public function set_url($url) {
-         if (!self::validate_url($url))
-             exit(__CLASS__ . ' error report: Wrong webex url');
-         list($this->url_prefix, $this->url_host) = preg_split("$://$", $url);
+     public function set_url($url)
+     {
+         if (!self::validate_url($url)) {
+             exit(__CLASS__.' error report: Wrong webex url');
+         }
+         list($this->url_prefix, $this->url_host) = preg_split('$://$', $url);
      }
 
      /**
       * Mode to send data.
       *
       * @param string mode to send.
-      * @return void
       */
-     public function set_sendmode($mode) {
-         if (!in_array($mode, self::get_sendmode()))
-             exit(__CLASS__ . ' error report: Wrong send mode');
+     public function set_sendmode($mode)
+     {
+         if (!in_array($mode, self::get_sendmode())) {
+             exit(__CLASS__.' error report: Wrong send mode');
+         }
          $this->send_mode = $mode;
      }
 
@@ -124,9 +131,9 @@
       * @param string $password Password to auth.
       * @param string $siteID Customer site id.
       * @param string $partnerID Customer partnerID id.
-      * @return void
       */
-     public function set_auth($username, $password, $siteID, $partnerID) {
+     public function set_auth($username, $password, $siteID, $partnerID)
+     {
          $this->username = $username;
          $this->password = $password;
          $this->siteID = $siteID;
@@ -140,28 +147,32 @@
       * 		$data['service']	= 'meeting';
       * 		$data['xml_header'] = '<item><subitem>data</subitem></item>';
       * 		$data['xml_body']	= '<item><subitem>data</subitem></item>';
+      *
       * @return string Returns a XML generated.
       */
-     private function get_xml($data) {
+     private function get_xml($data)
+     {
          $xml = array();
-         $xml[] = '<?xml version="' . self::XML_VERSION . '" encoding="' . self::XML_ENCODING . '"?>';
+         $xml[] = '<?xml version="'.self::XML_VERSION.'" encoding="'.self::XML_ENCODING.'"?>';
          $xml[] = '<serv:message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
          $xml[] = '<header>';
          $xml[] = '<securityContext>';
-         $xml[] = '<webExID>' . $this->username . '</webExID>';
-         $xml[] = '<password>' . $this->password . '</password>';
-         $xml[] = '<siteID>' . $this->siteID . '</siteID>';
-         $xml[] = '<partnerID>' . $this->partnerID . '</partnerID>';
-         if (isset($data['xml_header']))
+         $xml[] = '<webExID>'.$this->username.'</webExID>';
+         $xml[] = '<password>'.$this->password.'</password>';
+         $xml[] = '<siteID>'.$this->siteID.'</siteID>';
+         $xml[] = '<partnerID>'.$this->partnerID.'</partnerID>';
+         if (isset($data['xml_header'])) {
              $xml[] = $data['xml_header'];
+         }
          $xml[] = '</securityContext>';
          $xml[] = '</header>';
          $xml[] = '<body>';
-         $xml[] = '<bodyContent xsi:type="java:com.webex.service.binding.' . $data['service'] . '">';
+         $xml[] = '<bodyContent xsi:type="java:com.webex.service.binding.'.$data['service'].'">';
          $xml[] = $data['xml_body'];
          $xml[] = '</bodyContent>';
          $xml[] = '</body>';
          $xml[] = '</serv:message>';
+
          return implode('', $xml);
      }
 
@@ -170,7 +181,8 @@
       *
       * @return bool Returns true if have data and false if not.
       */
-     public function has_auth() {
+     public function has_auth()
+     {
          return (bool) $this->username && $this->password && $this->siteID && $this->partnerID;
      }
 
@@ -179,7 +191,8 @@
       *
       * @return string Returns a response from API.
       */
-     private function send($xml) {
+     private function send($xml)
+     {
          $post_data['UID'] = $this->username;
          $post_data['PWD'] = $this->password;
          $post_data['SID'] = $this->siteID;
@@ -188,15 +201,15 @@
          // Really I dont know why xml api give a error on http_build_query :(
          $post_string = '';
          foreach ($post_data as $variable => $value) {
-             $post_string .= '' . $variable . '=' . urlencode($value) . '&';
+             $post_string .= ''.$variable.'='.urlencode($value).'&';
          }
          $post_header = array();
-         $post_header[] = 'POST /' . self::SUFIX_XML_API . ' HTTP/1.0';
-         $post_header[] = 'Host: ' . $this->url_host;
-         $post_header[] = 'User-Agent: ' . self::USER_AGENT;
+         $post_header[] = 'POST /'.self::SUFIX_XML_API.' HTTP/1.0';
+         $post_header[] = 'Host: '.$this->url_host;
+         $post_header[] = 'User-Agent: '.self::USER_AGENT;
          if ($this->send_mode == self::SEND_FSOCKS) {
              $post_header[] = 'Content-Type: application/xml';
-             $post_header[] = 'Content-Length: ' . strlen($xml);
+             $post_header[] = 'Content-Length: '.strlen($xml);
          }
          $data = array();
          $data['post_header'] = $post_header;
@@ -204,7 +217,8 @@
          $this->data[$this->action][self::DATA_SENDER][self::DATA_SENDER_POST_HEADER] = $post_header;
          $this->data[$this->action][self::DATA_SENDER][self::DATA_SENDER_POST_BODY] = $post_header;
          $this->data[$this->action][self::DATA_SENDER][self::DATA_SENDER_XML] = $xml;
-         return $this->{'send_' . $this->send_mode}($data);
+
+         return $this->{'send_'.$this->send_mode}($data);
      }
 
      /**
@@ -213,12 +227,14 @@
       * @param array $data Data to send to API in format:
       * 		$data['post_header'] = "blablabla";
       * 		$data['post_header'] = "post_string";
+      *
       * @return string Returns a response from API.
       */
-     private function send_curl($data) {
+     private function send_curl($data)
+     {
          extract($data);
          $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $this->url_prefix . '://' . $this->url_host . '/' . self::SUFIX_XML_API);
+         curl_setopt($ch, CURLOPT_URL, $this->url_prefix.'://'.$this->url_host.'/'.self::SUFIX_XML_API);
          curl_setopt($ch, CURLOPT_PORT, self::get_port($this->url_prefix));
          curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -226,9 +242,11 @@
          curl_setopt($ch, CURLOPT_POSTFIELDS, $post_string);
          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
          $response = curl_exec($ch);
-         if ($response === false)
-             exit(__CLASS__ . ' error report: Curl error - ' . curl_error($ch));
+         if ($response === false) {
+             exit(__CLASS__.' error report: Curl error - '.curl_error($ch));
+         }
          curl_close($ch);
+
          return $response;
      }
 
@@ -238,12 +256,15 @@
       * @param array $data Data to send to API in format:
       * 		$data['post_header'] = "blablabla";
       * 		$data['post_header'] = "post_string";
+      *
       * @return string Returns a response from API.
+      *
       * @todo haha, I need to test this :)
       */
-     private function send_fsocks($data) {
+     private function send_fsocks($data)
+     {
          extract($data);
-         $post_data = implode("\n", $post_header) . "\n\n" . $post_string . "\n";
+         $post_data = implode("\n", $post_header)."\n\n".$post_string."\n";
          $fp = fsockopen($this->url_host, self::get_port($this->url_prefix), $errno, $error);
          if ($fp) {
              fwrite($fp, $post_data);
@@ -251,9 +272,11 @@
              while (!feof($fp)) {
                  $response .= fgets($fp, 1024);
              }
+
              return $response;
-         } else
-             exit(__CLASS__ . ' error report: Fsocks error - (' . $errno . ') ' . $error);
+         } else {
+             exit(__CLASS__.' error report: Fsocks error - ('.$errno.') '.$error);
+         }
      }
 
      /**
@@ -261,22 +284,26 @@
       *
       * @param string $type Type of data to be requested.
       * @param int $number number of sender to be requested.
+      *
       * @return string|object Return a response.
       */
-     public function get_response($type = self::DATA_RESPONSE_DATA, $number = null) {
+     public function get_response($type = self::DATA_RESPONSE_DATA, $number = null)
+     {
          if (isset($number) && is_int($number)) {
-             if ($number < 1 || $number > ($this->action))
-                 exit(__CLASS__ . ' error report: Invalid response number');
-             $number--;
-         } else
+             if ($number < 1 || $number > ($this->action)) {
+                 exit(__CLASS__.' error report: Invalid response number');
+             }
+             --$number;
+         } else {
              $number = ($this->action - 1);
+         }
          switch ($type) {
              case self::DATA_RESPONSE_XML:
              case self::DATA_RESPONSE_DATA:
                  return $this->data[$number][self::DATA_RESPONSE][$type];
                  break;
              default:
-                 exit(__CLASS__ . ' error report: I don\'t undestood that data you needs');
+                 exit(__CLASS__.' error report: I don\'t undestood that data you needs');
                  break;
          }
      }
@@ -284,13 +311,15 @@
      /**
       * @todo documentate in future.
       */
-     public function meeting_LstsummaryMeeting($maximumNum = 5) {
-         if (!$this->has_auth())
-             exit(__CLASS__ . ' error report: Auth data not found');
+     public function meeting_LstsummaryMeeting($maximumNum = 5)
+     {
+         if (!$this->has_auth()) {
+             exit(__CLASS__.' error report: Auth data not found');
+         }
          $xml_body = array();
          $xml_body[] = '<listControl>';
          $xml_body[] = '<startFrom/>';
-         $xml_body[] = '<maximumNum>' . $maximumNum . '</maximumNum>';
+         $xml_body[] = '<maximumNum>'.$maximumNum.'</maximumNum>';
          $xml_body[] = '</listControl>';
          $xml_body[] = '<order>';
          $xml_body[] = '<orderBy>STARTTIME</orderBy>';
@@ -298,13 +327,13 @@
          $xml_body[] = '<dateScope>';
          $xml_body[] = '</dateScope>';
          $data['xml_body'] = implode('', $xml_body);
-         $data['service'] = str_replace("_", ".", __FUNCTION__);
+         $data['service'] = str_replace('_', '.', __FUNCTION__);
          $xml = $this->get_xml($data);
          $response = $this->send($xml);
          $xml = simplexml_load_string($response);
-         $Data = new stdClass;
-         $Data->header = new stdClass;
-         $Data->header->response = new stdClass;
+         $Data = new stdClass();
+         $Data->header = new stdClass();
+         $Data->header->response = new stdClass();
          $Data->bodyContent = array();
          $node = $xml->children(self::API_SCHEMA_SERVICE);
          $Data->header->response->result = (string) $node[0]->response->result;
@@ -312,27 +341,15 @@
          $node_meeting = $node[1]->bodyContent;
          foreach ($node_meeting->children(self::API_SCHEMA_MEETING) as $meeting) {
              if ($meeting->meetingKey) {
-                 $MeetingData = new stdClass;
-                 $MeetingData->meetingKey = (string) $meeting->meetingKey;
-                 $MeetingData->confName = (string) $meeting->confName;
-                 $MeetingData->meetingType = (string) $meeting->meetingType;
-                 $MeetingData->hostWebExID = (string) $meeting->hostWebExID;
-                 $MeetingData->otherHostWebExID = (string) $meeting->otherHostWebExID;
-                 $MeetingData->timeZoneID = (string) $meeting->timeZoneID;
-                 $MeetingData->timeZone = (string) $meeting->timeZone;
-                 $MeetingData->status = (string) $meeting->status;
-                 $MeetingData->startDate = (string) $meeting->startDate;
-                 $MeetingData->duration = (string) $meeting->duration;
-                 $MeetingData->listStatus = (string) $meeting->listStatus;
-                 $MeetingData->hostJoined = (string) $meeting->hostJoined;
-                 $MeetingData->participantsJoined = (string) $meeting->participantsJoined;
-                 $MeetingData->telePresence = (string) $meeting->telePresence;
+                 $MeetingData = null;
+                 $this->parseMeetingXMLtoObject($MeetingData, $meeting);
                  $Data->bodyContent[] = $MeetingData;
              }
          }
          $this->data[$this->action][self::DATA_RESPONSE][self::DATA_RESPONSE_DATA] = $Data;
          $this->data[$this->action][self::DATA_RESPONSE][self::DATA_RESPONSE_XML] = $response;
-         $this->action++;
+         ++$this->action;
+
          return $this->action;
      }
 
@@ -351,28 +368,44 @@
      //public function meeting_CreateTeleconferenceSession()
      //public function meeting_DelMeeting()
      //public function meeting_GethosturlMeeting()
-     public function meeting_GetMeeting($meetingKey) {
-         if (!$this->has_auth())
-             exit(__CLASS__ . ' error report: Auth data not found');
+     public function meeting_GetMeeting($meetingKey)
+     {
+         if (!$this->has_auth()) {
+             exit(__CLASS__.' error report: Auth data not found');
+         }
          $xml_body = array();
-         $xml_body[] = '<meetingKey>' . $meetingKey . '</meetingKey>';
+         $xml_body[] = '<meetingKey>'.$meetingKey.'</meetingKey>';
          $data['xml_body'] = implode('', $xml_body);
-         $data['service'] = str_replace("_", ".", __FUNCTION__);
+         $data['service'] = str_replace('_', '.', __FUNCTION__);
          $xml = $this->get_xml($data);
          $response = $this->send($xml);
          $xml = simplexml_load_string($response);
-         $Data = new stdClass;
-         $Data->header = new stdClass;
-         $Data->header->response = new stdClass;
+         $Data = new stdClass();
+         $Data->header = new stdClass();
+         $Data->header->response = new stdClass();
          $Data->bodyContent = array();
          $node = $xml->children(self::API_SCHEMA_SERVICE);
          $Data->header->response->result = (string) $node[0]->response->result;
          $Data->header->response->gsbStatus = (string) $node[0]->response->gsbStatus;
          $node_meeting = $node[1]->bodyContent;
+         $this->parseMeetingXMLtoObject($Data->bodyContent, $node_meeting);
          $this->data[$this->action][self::DATA_RESPONSE][self::DATA_RESPONSE_DATA] = $Data;
          $this->data[$this->action][self::DATA_RESPONSE][self::DATA_RESPONSE_XML] = $response;
-         $this->action++;
+         ++$this->action;
+
          return $this->action;
+     }
+
+     private function parseMeetingXMLtoObject(&$object, $xml_data)
+     {
+         $object = new stdClass();
+         foreach ($xml_data->children(self::API_SCHEMA_MEETING) as $key => $data) {
+             if (count($data->children(self::API_SCHEMA_MEETING)) == 0) {
+                 $object->$key = (string) $data;
+             } else {
+                 $this->parseMeetingXMLtoObject($object->$key, $data);
+             }
+         }
      }
 
      //public function meeting_GetTeleconferenceSession()
