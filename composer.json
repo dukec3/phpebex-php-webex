@@ -1,0 +1,7 @@
+{
+    "name": "drakkon-net/php-webex",
+    "description": "Simple class to integrate with Cisco Webex XML API.",
+    "require": {
+        "php": ">=5.3.0",
+    }
+}
