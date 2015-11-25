@@ -31,7 +31,7 @@
      const WEBEX_DOMAIN = 'webex.com';
      const XML_VERSION = '1.0';
      const XML_ENCODING = 'UTF-8';
-     const USER_AGENT = 'PHPebEx - WebEx PHP API (https://github.com/joubertredrat/phpebex-php-webex)';
+     const USER_AGENT = 'PHPebEx - WebEx PHP API (https://github.com/dukec3/phpebex-php-webex)';
      const API_SCHEMA_MEETING = 'http://www.webex.com/schemas/2002/06/service/meeting';
      const API_SCHEMA_SERVICE = 'http://www.webex.com/schemas/2002/06/service';
      const DATA_SENDER = 'sender';
