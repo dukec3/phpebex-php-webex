@@ -4,10 +4,9 @@
  * Built on version 5.9 of Reference Guide.
  * Based on Webex class by Joshua McGinnis (http://joshuamcginnis.com/2010/07/12/webex-api-php-sdk).
  *
- * @author Joubert Guimarães de Assis "RedRat" <joubert@redrat.com.br> - modified by Crhistopher Duke <duke@drakkon.net>
- * @copyright Copyright (c) 2013, RedRat Consultoria
+ * @author Joubert Guimarães de Assis "RedRat" <joubert@redrat.com.br> - modified by Christopher Duke <duke@drakkon.net>
+ * @copyright Copyright (c) 2015
  * @license GPL version 2
- * @see Github, animes and mangás, cute girls and PHP, much PHP
  * @link http://developer.cisco.com/documents/4733862/4736722/xml_api_5+9.pdf
  * @link https://github.com/dukec3/phpebex-php-webex
  */
